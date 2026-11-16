@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Vencimientos</title>
+  <meta name="description" content="Recuerda tus vencimientos: revisión técnica, permiso de circulación, cuentas y más.">
+  <meta name="theme-color" content="#1f6feb">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Vencimientos">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="icon" href="icons/icon-192.png" type="image/png" sizes="192x192">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <h1>Vencimientos</h1>
+    <p id="hoy" class="hoy"></p>
+  </header>
+
+  <main>
+    <section class="resumen" aria-label="Resumen">
+      <div class="chip chip-rojo"><span id="cnt-rojo">0</span> vencidos</div>
+      <div class="chip chip-amarillo"><span id="cnt-amarillo">0</span> próximos</div>
+      <div class="chip chip-verde"><span id="cnt-verde">0</span> al día</div>
+    </section>
+
+    <ul id="lista" class="lista" aria-live="polite"></ul>
+
+    <div id="vacio" class="vacio" hidden>
+      <div class="vacio-icono" aria-hidden="true">📅</div>
+      <p><strong>Aún no tienes vencimientos.</strong></p>
+      <p>Toca <strong>“Agregar”</strong> para registrar tu primer pago, revisión o trámite.</p>
+    </div>
+
+    <details id="pagados-box" class="pagados" hidden>
+      <summary>Pagados (<span id="cnt-pagados">0</span>)</summary>
+      <ul id="lista-pagados" class="lista"></ul>
+    </details>
+  </main>
+
+  <button id="btn-agregar" class="fab" type="button">
+    <span aria-hidden="true">＋</span> Agregar
+  </button>
+
+  <dialog id="dlg" class="dlg">
+    <form id="form" method="dialog" novalidate>
+      <h2 id="dlg-titulo">Nuevo vencimiento</h2>
+
+      <label class="campo">
+        <span>Nombre</span>
+        <input id="f-nombre" name="nombre" type="text" required maxlength="60"
+               placeholder="Ej: Revisión técnica" autocomplete="off">
+      </label>
+
+      <label class="campo">
+        <span>Fecha de vencimiento</span>
+        <input id="f-fecha" name="fecha" type="date" required>
+      </label>
+
+      <fieldset class="campo">
+        <legend>Categoría</legend>
+        <div class="opciones opciones-cat" id="f-categoria">
+          <label><input type="radio" name="categoria" value="Auto" checked><span>🚗 Auto</span></label>
+          <label><input type="radio" name="categoria" value="Hogar"><span>🏠 Hogar</span></label>
+          <label><input type="radio" name="categoria" value="Salud"><span>🩺 Salud</span></label>
+          <label><input type="radio" name="categoria" value="Mascota"><span>🐾 Mascota</span></label>
+          <label><input type="radio" name="categoria" value="Otro"><span>📌 Otro</span></label>
+        </div>
+      </fieldset>
+
+      <fieldset class="campo">
+        <legend>¿Se repite?</legend>
+        <div class="opciones opciones-rep">
+          <label><input type="radio" name="repite" value="no" checked><span>No</span></label>
+          <label><input type="radio" name="repite" value="mensual"><span>Mensual</span></label>
+          <label><input type="radio" name="repite" value="anual"><span>Anual</span></label>
+        </div>
+      </fieldset>
+
+      <p id="f-error" class="error" role="alert" hidden></p>
+
+      <div class="acciones">
+        <button type="button" id="btn-cancelar" class="btn btn-sec">Cancelar</button>
+        <button type="submit" id="btn-guardar" class="btn btn-pri">Guardar</button>
+      </div>
+      <button type="button" id="btn-eliminar" class="btn btn-peligro" hidden>Eliminar vencimiento</button>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast" role="status" hidden>
+    <span id="toast-msg"></span>
+    <button type="button" id="toast-btn" class="toast-btn">Deshacer</button>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
